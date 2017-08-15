@@ -1,0 +1,130 @@
+@{
+    ViewData["Title"] = "Registrarse";
+}
+
+<style>
+.mdl-grid {
+    align-items: center;
+    justify-content: center;
+}
+.mdl-card {
+    width: 400px;
+}
+#show-dialog {
+    position: fixed;
+    display: block;
+    right: 0;
+    bottom: 0;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    z-index: 900;
+}
+.mdl-dialog {
+    width: 475px;
+}
+.dialog-card > .mdl-card__title {
+    color: #fff;
+}
+</style>
+
+<div class="text-center" style="padding-top: 60px;">
+  <img src="~/images/Logo.png"/>
+</div>
+
+<div class="mdl-grid">
+    <div class="dialog-card mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title mdl-color--indigo-700">
+            <h2 class="mdl-card__title-text">Registrarse</h2>
+        </div>
+        <div class="mdl-card__supporting-text mdl-cell mdl-cell--12-col">
+            <form action="" id="login-chat-form">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                  <input class="mdl-textfield__input" type="text" id="nombre" />
+                  <label class="mdl-textfield__label" for="nombre">Nombre</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                  <input class="mdl-textfield__input" type="email" id="correo" />
+                  <label class="mdl-textfield__label" for="correo">Correo Electronico</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                  <input class="mdl-textfield__input" type="password" id="clave1" />
+                  <label class="mdl-textfield__label" for="clave1">Contraseña</label>   
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                  <input class="mdl-textfield__input" type="password" id="clave2" />
+                  <label class="mdl-textfield__label" for="clave2">Confirmar Contraseña</label>   
+                </div>
+            </form>
+            <div class="mdl-card__actions">
+              <div class="text-center">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn_aceptar"> Aceptar </button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn_cancelar"> Cancelar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    <br/>
+    <a href='@Url.Action("Entrar", "Login")'> ¿Ya Tienes Una Cuenta? </a>
+</div>
+
+<dialog class="mdl-dialog">
+    <div id="dialog_contenido" class="mdl-dialog__content">
+        <img src="~/images/Gracias.jpg"/>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button id="btn_close" type="button" class="mdl-button close">Cerrar</button>
+    </div>
+</dialog>
+
+<input type="image" id="show-dialog" class="img-circle" src="~/images/Marcos.jpg" width="80" height="80">
+
+<script>
+var info = document.querySelector('dialog');
+var showDialogButton = document.querySelector('#show-dialog');
+if (! info.showModal) {
+    dialogPolyfill.registerDialog(info);
+}
+showDialogButton.addEventListener('click', function() {
+    info.showModal();
+});
+info.querySelector('.close').addEventListener('click', function() {
+    info.close();
+});
+
+$(function () {
+    $("#btn_aceptar").click(function () {
+        password1 = $("#clave1").val();
+	    password2 = $("#clave2").val();
+        if (password1==password2){
+            $.post("/Home/PostMethod",
+            {
+                foto:   SearchPhoto();
+                nombre: $("#nombre").val(),
+                correo: $("#correo").val(),
+                clave:  $("#clave1").val()
+            },
+            function (response) 
+            {
+                /* Respuesta Del Servidor */
+            }
+            );
+        }
+    });
+});
+
+function SearchPhoto(){
+	var foto;
+	var num = Math.floor(Math.random() * (6 - 1)) + 1;
+	switch(num){
+		case 1: foto = "https://api.adorable.io/avatars/400/abott@adorable.io.png"; break;
+		case 2: foto = "https://api.adorable.io/avatars/face/eyes4/nose3/mouth7/8e8895"; break;
+		case 3: foto = "http://api.adorable.io/avatars/face/eyes2/nose7/mouth8/aae"; break;
+		case 4: foto = "http://api.adorable.io/avatars/face/eyes1/nose4/mouth9/beb"; break;
+		case 5: foto = "http://api.adorable.io/avatars/face/eyes5/nose3/mouth11/eeb"; break;
+	}
+	return foto;
+}
+</script>

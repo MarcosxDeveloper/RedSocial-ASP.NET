@@ -1,0 +1,80 @@
+@{
+    ViewData["Title"] = "Publicaciones";
+}
+
+<style>	
+#show-dialog {
+    position: fixed;
+    display: block;
+    right: 0;
+    bottom: 0;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    z-index: 900;
+}
+.mdl-dialog {
+    width: 400px;
+}
+.mdl-grid {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.mdl-textfield .mdl-button {
+    position: absolute;
+    right: 0;
+}
+.mdl-card__supporting-text{
+    vertical-align: middle;
+}
+</style>
+
+<div class="text-center">
+    <h2> Publicaciones </h2>
+</div>
+
+<div class="mdl-grid">
+@foreach (var item in Models) {
+    <div class="mdl-card mdl-cell mdl-cell--5-col mdl-shadow--2dp">
+    <div class="mdl-card__title">
+        <img src="@item.foto" class="img-circle" width="50" height="50"/>
+        &nbsp;
+        <h3 class="mdl-card__title-text">@item.nombre</h3>
+    </div>
+    <div class="mdl-card__supporting-text">
+        <p>
+        @item.contenido
+        </p>
+        <strong><i class="material-icons">access_time</i> @item.fecha_publicacion </strong>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+            <input class="mdl-textfield__input" type="text" id="comentario" />
+            <label class="mdl-textfield__label" for="publicacion">Comentario</label>
+            <button class="mdl-button" type="button"><i class="material-icons">send</i></button>
+        </div>
+    </div>
+    </div>       
+}
+<dialog class="mdl-dialog">
+    <h4 id="dialog_titulo" class="mdl-dialog__title">Titulo</h4>
+    <div id="dialog_contenido" class="mdl-dialog__content">
+    <!-- Aqui veras la informacion de la DB -->
+    </div>
+    <div class="mdl-dialog__actions">
+        <button id="btn_close" type="button" class="mdl-button close">Cerrar</button>
+    </div>
+</dialog>
+
+<button id="show-dialog" type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">add</i>
+</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+user = sessionStorage.getItem('My_User');
+if (user == null){
+	window.location = '@Url.Action("Entrar", "Login")'
+}
+</script>

@@ -1,0 +1,106 @@
+@{
+    ViewData["Title"] = "Iniciar Sesion";
+}
+
+<style>
+.mdl-grid {
+    align-items: center;
+    justify-content: center;
+}
+.mdl-card {
+    width: 400px;
+}
+#show-dialog {
+    position: fixed;
+    display: block;
+    right: 0;
+    bottom: 0;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    z-index: 900;
+}
+.mdl-dialog {
+    width: 475px;
+}
+.dialog-card > .mdl-card__title {
+    color: #fff;
+}
+</style>
+</style>
+
+<div class="text-center" style="padding-top: 100px;">
+  <img src="~/images/Logo.png"/>
+</div>
+
+<div class="mdl-grid">
+    <div class="dialog-card mdl-card mdl-shadow--2dp">
+        <div class="mdl-card__title mdl-color--indigo-700">
+            <h2 class="mdl-card__title-text" id="entrar">Iniciar Sesion</h2>
+        </div>
+        <div class="mdl-card__supporting-text mdl-cell mdl-cell--12-col">
+            <form action="" id="login-chat-form">
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                  <input class="mdl-textfield__input" type="email" id="usuario" />
+                  <label class="mdl-textfield__label" for="usuario">Usuario</label>
+                </div>
+                <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-cell mdl-cell--12-col">
+                  <input class="mdl-textfield__input" type="password" id="clave" />
+                  <label class="mdl-textfield__label" for="clave">Contraseña</label>   
+                </div>
+            </form>
+            <div class="mdl-card__actions">
+                <div class="text-center">
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn_aceptar"> Aceptar </button>
+                    <button class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent" id="btn_cancelar"> Cancelar </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="text-center">
+    <br/>
+    <a href='@Url.Action("Registrarse", "Login")'> ¿Aun No Tienes Una Cuenta? </a>
+</div>
+
+<dialog class="mdl-dialog">
+    <div id="dialog_contenido" class="mdl-dialog__content">
+        <img src="~/images/Gracias.jpg"/>
+    </div>
+    <div class="mdl-dialog__actions">
+        <button id="btn_close" type="button" class="mdl-button close">Cerrar</button>
+    </div>
+</dialog>
+
+<input type="image" id="show-dialog" class="img-circle" src="~/images/Marcos.jpg" width="80" height="80">
+
+<script>
+var info = document.querySelector('dialog');
+var showDialogButton = document.querySelector('#show-dialog');
+if (! info.showModal) {
+    dialogPolyfill.registerDialog(info);
+}
+showDialogButton.addEventListener('click', function() {
+    info.showModal();
+});
+info.querySelector('.close').addEventListener('click', function() {
+    info.close();
+});
+
+$(function () {
+    $("#btn_aceptar").click(function () {
+        $.post("/Login/BuscarUsuario",
+            {
+                correo: $("#usuario").val(),
+                clave: $("#clave").val()
+            },
+            function (response) {
+                Usuario = {};
+                Usuario.id = response.id;
+                sessionStorage.setItem('My_User',  JSON.stringify(Usuario));
+                windows.location = '@Url.Action("Perfil", "Home")';
+            }
+        );
+    });
+});
+</script>

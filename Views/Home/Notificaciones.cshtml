@@ -1,0 +1,69 @@
+@{
+    ViewData["Title"] = "Notificaciones";
+}
+
+<style>	
+#show-dialog {
+  position: fixed;
+  display: block;
+  right: 0;
+  bottom: 0;
+  margin-right: 40px;
+  margin-bottom: 40px;
+  z-index: 900;
+}
+.mdl-dialog {
+  width: 400px;
+}
+.mdl-button {
+  min-width: 0;
+  padding: 0 5px;
+}
+</style>
+
+<div class="text-center">
+    <h2> Notificaciones </h2>
+</div>
+
+<center>
+<table class="mdl-data-table mdl-js-data-table mdl-shadow--2dp">
+    @foreach (var item in Models) {
+        <tr>
+        <td>
+            <img class="img-circle" src="@item.foto" width="80" height="80"/>
+        </td>
+        <td>
+            <p><a href="#">@amigo</a> quiere agregarte como amigo </p>
+            <span><i class="material-icons">access_time</i> @fecha_notificacion </span>
+        </td>
+        <td>
+            <button class="mdl-button" type="button"><i class="material-icons">person_add</i></button>
+            <button class="mdl-button" type="button"><i class="material-icons">delete</i></button>
+        </td>
+        </tr>
+    }
+</table>
+</center>
+
+<dialog class="mdl-dialog">
+    <h4 id="dialog_titulo" class="mdl-dialog__title">Titulo</h4>
+    <div id="dialog_contenido" class="mdl-dialog__content">
+    <!-- Aqui veras la informacion de la DB -->
+    </div>
+    <div class="mdl-dialog__actions">
+        <button id="btn_close" type="button" class="mdl-button close">Cerrar</button>
+    </div>
+</dialog>
+
+<button id="show-dialog" type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored">
+  <i class="material-icons">notifications_off</i>
+</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+user = sessionStorage.getItem('My_User');
+if (user == null){
+	window.location = '@Url.Action("Entrar", "Login")'
+}
+</script>

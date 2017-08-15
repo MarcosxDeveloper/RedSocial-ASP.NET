@@ -1,0 +1,151 @@
+@{
+    ViewData["Title"] = "Mensajes";
+}
+
+<style>
+#show-dialog {
+    position: fixed;
+    display: block;
+    right: 0;
+    bottom: 0;
+    margin-right: 40px;
+    margin-bottom: 40px;
+    z-index: 900;
+}
+.mdl-dialog {
+    width: 400px;
+}
+.contact-image{
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.mdl-navigation__link{
+    font-size: 14px;
+}
+
+/* Chat Style *//
+
+html, body {
+    font-family: 'Roboto', 'Helvetica', sans-serif;
+}
+.drawer {
+    border: none;   
+}
+.navigation {
+    -webkit-flex-grow: 1;
+    -ms-flex-positive: 1;
+    flex-grow: 1;
+}
+.send-button {
+    padding: 16px 0px;
+}
+.message-area {
+    position: absolute;
+    width: 100%;
+    bottom: 8px;
+    padding: 0;
+}
+.message-card {
+    width: inherit;
+    min-height: inherit;
+}
+.message-field {
+    width: 100%;
+}
+.username-field {
+    width: 100%;
+}
+.chat-area {
+    position: absolute;
+    left : 0;
+    right : 0;
+    top:0;
+    bottom:0;
+}
+.user-card {
+    height: 50%;
+}
+.chat-list-div {
+    padding: 0;
+    overflow: auto;
+    height: 85%;
+    display: none;
+}
+.user-list-div {
+    padding: 0;
+    overflow: auto;
+    height: 100%;
+}
+.listborder {
+    margin: 0;
+    padding: 0;
+}
+.user-list-item {
+    padding-top: 0;
+    padding-bottom: 0;
+}
+</style>
+
+<div id="chat">
+    <div class="mdl-layout mdl-js-layout mdl-layout--fixed-drawer mdl-layout--fixed-header " >
+        <header class="mdl-layout__header">
+            <div class="mdl-layout__header-row">
+                <img class="contact-image" src="~/images/Face2.png" />
+                &nbsp;&nbsp;
+                <span class="mdl-layout-title" id="header-title">Jose Francisco - Desconectado</span>
+            </div>
+        </header>
+        <div class="mdl-layout__drawer mdl-color--blue-grey-900 mdl-color-text--blue-grey-50 drawer">
+        <span class="mdl-layout-title drawer-header">Mis Contactos</span>
+        <nav class="mdl-navigation mdl-color--blue-grey-800 navigation" id="channel-list">
+        @foreach (var item in Models) {
+            <a class="mdl-navigation__link mdl-color-text--blue-grey-50">
+            <img class="contact-image" src="@item.foto"/> @item.nombre </a>        
+        }
+        </nav>
+        </div>
+        <main class="mdl-layout__content mdl-color--grey-50">
+            <div class="page-content">
+                <section class="message-area mdl-grid">
+                        <div class="mdl-cell mdl-cell--12-col">
+                            <div class="message-card mdl-card mdl-grid mdl-shadow--2dp">
+                                <div class="message-box mdl-cell mdl-cell--11-col">
+                                    <div class="message-field mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+                                        <input class="mdl-textfield__input" type="text" id="txt_mensaje">
+                                        <label class="mdl-textfield__label" for="txt_mensaje">Mensaje</label>
+                                    </div>
+                                </div>
+                                <div class="send-button mdl-cell mdl-cell--1-col">
+                                    <button id="btn_mensaje" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect mdl-button--accent">Enviar</button>
+                                </div>
+                            </div>
+                        </div>
+                </section>
+            </div>
+        </main>
+    </div>
+</div>
+
+<dialog class="mdl-dialog">
+    <h4 id="dialog_titulo" class="mdl-dialog__title">Titulo</h4>
+    <div id="dialog_contenido" class="mdl-dialog__content">
+    <!-- Aqui veras todas la informacion de la DB -->
+    </div>
+    <div class="mdl-dialog__actions">
+        <button id="btn_close" type="button" class="mdl-button close">Cerrar</button>
+    </div>
+</dialog>
+
+<button id="show-dialog" type="button" class="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored" style="display:none;">
+  <i class="material-icons">contacts</i>
+</button>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<script>
+user = sessionStorage.getItem('My_User');
+if (user == null){
+	window.location = '@Url.Action("Entrar", "Login")'
+}
+</script>
